@@ -105,16 +105,45 @@ function getSubnetInfo(ipAddress, subnet) {
             subnetBit = binarySubnetMask.indexOf("0");
         }
 
-        binaryIP = ipToBinary(ipAddress);
-        networkBits = binaryIP.slice(0, subnetBit);
-        binaryBroadcast = networkBits + "1".repeat(32 - subnetBit);
-        broadcast = binaryToIP(binaryBroadcast);
-        binaryNetwork = networkBits + "0".repeat(32-subnetBit);
-        networkAddress = binaryToIP(binaryNetwork)
-        wildcardMask = binaryToIP("0".repeat(subnetBit) + "1".repeat(32-subnetBit));
-        numberOfHosts = Math.pow(2, (32-subnetBit)) - 2;
-        firstHost = nextIPAddress(networkAddress);
-        lastHost = previousIPAddress(broadcast);
+        if (subnet === 31 || subnet === "255.255.255.254") {
+            binaryIP = ipToBinary(ipAddress);
+            networkBits = binaryIP.slice(0, subnetBit);
+            binaryBroadcast = networkBits + "1".repeat(32 - subnetBit);
+            broadcast = binaryToIP(binaryBroadcast);
+            binaryNetwork = networkBits + "0".repeat(32-subnetBit);
+            networkAddress = binaryToIP(binaryNetwork)
+            wildcardMask = binaryToIP("0".repeat(subnetBit) + "1".repeat(32-subnetBit));
+            numberOfHosts = Math.pow(2, (32-subnetBit));
+            lastHost = nextIPAddress(networkAddress);
+            firstHost = previousIPAddress(broadcast);
+        } else if (subnet === 32 || subnet === "255.255.255.255") {
+            subnetBit = 32;
+            binaryIP = ipToBinary(ipAddress);
+            networkBits = binaryIP.slice(0, subnetBit);
+            binaryBroadcast = networkBits + "1".repeat(32 - subnetBit);
+            broadcast = binaryToIP(binaryBroadcast);
+            binaryNetwork = networkBits + "0".repeat(32-subnetBit);
+            networkAddress  = ipAddress;
+            wildcardMask = "0.0.0.0";
+            numberOfHosts = 1;
+            lastHost = ipAddress;
+            firstHost = ipAddress;
+        } else {
+            binaryIP = ipToBinary(ipAddress);
+            networkBits = binaryIP.slice(0, subnetBit);
+            binaryBroadcast = networkBits + "1".repeat(32 - subnetBit);
+            broadcast = binaryToIP(binaryBroadcast);
+            binaryNetwork = networkBits + "0".repeat(32-subnetBit);
+            networkAddress = binaryToIP(binaryNetwork)
+            wildcardMask = binaryToIP("0".repeat(subnetBit) + "1".repeat(32-subnetBit));
+            numberOfHosts = Math.pow(2, (32-subnetBit)) - 2;
+            firstHost = nextIPAddress(networkAddress);
+            lastHost = previousIPAddress(broadcast);
+        }
+
+        
+
+       
         
         return {
             ip: ipAddress,
