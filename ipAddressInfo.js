@@ -105,7 +105,7 @@ function getSubnetInfo(ipAddress, subnet) {
             subnetBit = binarySubnetMask.indexOf("0");
         }
 
-        if (subnet === 31 || subnet === "255.255.255.254") {
+        if (subnet === "31" || subnet === "255.255.255.254") {
             binaryIP = ipToBinary(ipAddress);
             networkBits = binaryIP.slice(0, subnetBit);
             binaryBroadcast = networkBits + "1".repeat(32 - subnetBit);
@@ -116,7 +116,7 @@ function getSubnetInfo(ipAddress, subnet) {
             numberOfHosts = Math.pow(2, (32-subnetBit));
             lastHost = nextIPAddress(networkAddress);
             firstHost = previousIPAddress(broadcast);
-        } else if (subnet === 32 || subnet === "255.255.255.255") {
+        } else if (subnet === "32" || subnet === "255.255.255.255") {
             subnetBit = 32;
             binaryIP = ipToBinary(ipAddress);
             networkBits = binaryIP.slice(0, subnetBit);
